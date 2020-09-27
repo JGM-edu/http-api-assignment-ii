@@ -1,25 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Our simple HTTP server</title>
-  <link rel="stylesheet" type="text/css" href="/style.css">
+  	<title>Our simple HTTP server</title>
+  	<link rel="stylesheet" type="text/css" href="/style.css">
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
-  <script type="text/babel">
-
-  </script>
+  	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script> -->
+  	<script>
+		const dqs = document.querySelector.bind(document);
+	  	window.onload = init;
+	  	function init() {
+			//document.querySelector(`#userForm input[type="submit"]`).onclick = (e) =>
+		  	dqs(`#userForm button`).onclick = (e) =>
+		  	{
+			  	let xhr = new XMLHttpRequest();
+			  	xhr.onload = (evArgs) =>
+			  	{
+					dqs("#content").innerHTML = "";
+					switch (xhr.status) {
+						case 200:
+							dqs("#content").innerHTML = `<h1>Success</h1><h3>${xhr.responseText}</h3>`;
+							break;
+						case 201:
+							dqs("#content").innerHTML = `<h1>Create</h1><h3>Message: ${JSON.parse(xhr.responseText).message}</h3>`;//<p>${xhr.responseText}</p>`;
+							break;
+						case 204:
+							dqs("#content").innerHTML = `<h1>User Updated (No Content)</h1>`;
+							break;
+						case 400:
+							dqs("#content").innerHTML = `<h1>Bad Request</h1><h3>Message: ${JSON.parse(xhr.responseText).message}</h3>`;//<p>${xhr.responseText}</p>`;
+							break;
+						case 404:
+						default:
+							dqs("#content").innerHTML = `<h1>Not Found</h1>`;
+							if (!xhr.response == "")
+								dqs("#content").innerHTML += `<h3>Message: ${JSON.parse(xhr.responseText).message}</h3>`;//<p>${xhr.responseText}</p>`;
+							break;
+					}
+					// dqs("#content").innerHTML += `${xhr.status}`;
+			  	};
+				//xhr.setRequestHeader()
+			  	xhr.open(dqs(`#methodSelect`).value, dqs(`#urlField`).value);
+			  	xhr.send();
+		  	};
+		  	dqs(`#nameForm button`).onclick = (e) =>
+		  	{
+			  	let xhr = new XMLHttpRequest();
+			  	xhr.onload = (evArgs) =>
+			  	{
+					dqs("#content").innerHTML = "";
+					switch (xhr.status) {
+						case 200:
+							dqs("#content").innerHTML = `<h1>Success</h1><h3>${xhr.responseText}</h3>`;
+							break;
+						case 201:
+							dqs("#content").innerHTML = `<h1>Create</h1><h3>Message: ${JSON.parse(xhr.response).message}</h3>`;//<p>${xhr.responseText}</p>`;
+							break;
+						case 204:
+							dqs("#content").innerHTML = `<h1>User Updated (No Content)</h1>`;
+							break;
+						case 400:
+							dqs("#content").innerHTML = `<h1>Bad Request</h1><h3>Message: ${JSON.parse(xhr.responseText).message}</h3>`;//<p>${xhr.responseText}</p>`;
+							break;
+						case 404:
+						default:
+							dqs("#content").innerHTML = `<h1>Not Found</h1>`;
+							if (!xhr.response == "")
+								dqs("#content").innerHTML += `<h3>Message: ${JSON.parse(xhr.response).message}</h3>`;//<p>${xhr.response}</p>`;
+							break;
+					}
+					// dqs("#content").innerHTML += `${xhr.status}`;
+			  	};
+				//xhr.setRequestHeader()
+				// dqs('#urlField').value
+				let url = `${"/addUser"}?name=${dqs('#nameField').value}&age=${dqs('#ageField').value}`;
+				// dqs(`#methodSelect`).value
+			  	xhr.open("POST", url);
+			  	xhr.send();
+		  };
+	  }
+  	</script>
 </head>
 <body>
   <section id="top">
     <h3>POST Status Code Tests</h3>
-    <form id="nameForm" action="/addUser" method="post">
+    <!-- <form id="nameForm" action="/addUser" method="post"> -->
+    <div id="nameForm">
       <label for="name">Name: </label>
       <input id="nameField" type="text" name="name" />
       <label for="age">Age: </label>
       <input id="ageField" type="number" name="age" min="0" max="100" step="1"/>
-      <input type="submit" value="Add User" />
-    </form>
-    <form id="userForm" action="/getUsers" method="get">
+      <!-- <input type="submit" value="Add User" /> -->
+      <button>Add User</button>
+    <!-- </form> -->
+    </div>
+    <!-- <form id="userForm" action="/getUsers" method="get"> -->
+    <div id="userForm">
       <select id='urlField'>
         <option value='/getUsers'>/getUsers</option>
         <option value='/notReal'>/notReal</option>
@@ -28,8 +103,10 @@
         <option value="get">GET</option>
         <option value="head">HEAD</option>
       </select>
-      <input type="submit" value="Get User" />
-    </form>
+      <!-- <input type="submit" value="Get User" /> -->
+      <button>Get User</button>
+    <!-- </form> -->
+    </div>
   </section>
   <section id="content">
   </section>
