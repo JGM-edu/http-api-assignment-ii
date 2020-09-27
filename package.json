@@ -1,0 +1,27 @@
+{
+  "name": "http-api-assignment-ii",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "scripts": {
+	"test": "echo \"Error: no test specified\" && exit 1",
+	"start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "nodemon": "nodemon --watch ./src ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JGM-edu/http-api-assignment-ii.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JGM-edu/http-api-assignment-ii/issues"
+  },
+  "homepage": "https://github.com/JGM-edu/http-api-assignment-ii#readme"
+}
